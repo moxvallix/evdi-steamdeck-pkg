@@ -9,7 +9,7 @@ _pkgver="${pkgver%%.r*}"
 pkgrel=1
 pkgdesc='kernel module that enables management of multiple screens, primarily for DisplayLink USB VGA DVI HDMI DisplayPort video'
 arch=('i686' 'x86_64')
-url='https://github.com/moxvallix/evdi-steamdeck'
+url='https://github.com/steamdeck-linux/evdi-steamdeck'
 license=('GPL')
 depends=('dkms')
 makedepends=('git' 'libdrm')
@@ -18,7 +18,7 @@ provides=("evdi=${_pkgver}")
 conflicts=('evdi')
 _srcdir="evdi-steamdeck"
 source=(
-  'git+https://github.com/moxvallix/evdi-steamdeck'
+  'git+https://github.com/steamdeck-linux/evdi-steamdeck'
 )
 source[0]+='#branch=devel'
 md5sums=('SKIP')
