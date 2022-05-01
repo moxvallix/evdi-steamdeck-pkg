@@ -1,13 +1,13 @@
-# Maintainer: Chris Severance aur.severach aATt spamgourmet dott com
-# Contributor: ajs124
+# Oiginal PKGBUILD from https://aur.archlinux.org/evdi-git
 
-# Tested with Kernel 4.16, Dell D3000 SuperSpeed USB 3.0 Docking Station, 17e9:4318 DisplayLink
+# After installation run following command to enable vmap_texture
+# echo "options evdi vmap_texture=1" | sudo tee /etc/modprobe.d/evdi.conf
 
-pkgname='evdi-git'
-pkgver=1.10.1.r1.g3b80ae6
+pkgname='evdi-amd-vmap-texture'
+pkgver=1.10.1.r20.gca471be
 _pkgver="${pkgver%%.r*}"
 pkgrel=1
-pkgdesc='kernel module that enables management of multiple screens, primarily for DisplayLink USB VGA DVI HDMI DisplayPort video'
+pkgdesc='A Linux® kernel module that enables management of multiple screens. Patched for the amd_vmap_texture support.'
 arch=('i686' 'x86_64')
 url='https://github.com/steamdeck-linux/evdi-steamdeck'
 license=('GPL')
@@ -20,7 +20,7 @@ _srcdir="evdi-steamdeck"
 source=(
   'git+https://github.com/steamdeck-linux/evdi-steamdeck'
 )
-source[0]+='#branch=devel'
+source[0]+='#branch=amd_vmap_texture'
 md5sums=('SKIP')
 sha256sums=('SKIP')
 
@@ -66,7 +66,7 @@ build() {
 
 package() {
   cd "${_srcdir}"
-  install -Dpm755 "library/lib${pkgname%-git}.so"* -t "${pkgdir}/usr/lib/"
+  install -Dpm755 "library/lib${pkgname%%-*}.so"* -t "${pkgdir}/usr/lib/"
 
   pushd "${pkgdir}/usr/lib/" > /dev/null
   local _libs=(*.so.*)
@@ -80,7 +80,7 @@ package() {
   ln -sf "${_libs}" "${_libase}.0" # bad soname
   popd > /dev/null
 
-  local _DKMS="${pkgdir}/usr/src/${pkgname%-git}-${_pkgver}"
+  local _DKMS="${pkgdir}/usr/src/${pkgname%%-*}-${_pkgver}"
   install -Dpm644 module/* -t "${_DKMS}/"
   make -j1 -C "${_DKMS}" clean
   rm -f "${_DKMS}/evdi.mod"
