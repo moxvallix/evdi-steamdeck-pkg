@@ -3,8 +3,9 @@
 
 # Tested with Kernel 4.16, Dell D3000 SuperSpeed USB 3.0 Docking Station, 17e9:4318 DisplayLink
 
-pkgname='evdi-git'
-pkgver=1.10.1.r1.g3b80ae6
+pkgname='evdi-steamdeck'
+_pkgname='evdi-git'
+pkgver=1.12.0.r0.g9c3683e
 _pkgver="${pkgver%%.r*}"
 pkgrel=1
 pkgdesc='kernel module that enables management of multiple screens, primarily for DisplayLink USB VGA DVI HDMI DisplayPort video'
@@ -66,7 +67,7 @@ build() {
 
 package() {
   cd "${_srcdir}"
-  install -Dpm755 "library/lib${pkgname%-git}.so"* -t "${pkgdir}/usr/lib/"
+  install -Dpm755 "library/lib${_pkgname%-git}.so"* -t "${pkgdir}/usr/lib/"
 
   pushd "${pkgdir}/usr/lib/" > /dev/null
   local _libs=(*.so.*)
@@ -80,7 +81,7 @@ package() {
   ln -sf "${_libs}" "${_libase}.0" # bad soname
   popd > /dev/null
 
-  local _DKMS="${pkgdir}/usr/src/${pkgname%-git}-${_pkgver}"
+  local _DKMS="${pkgdir}/usr/src/${_pkgname%-git}-${_pkgver}"
   install -Dpm644 module/* -t "${_DKMS}/"
   make -j1 -C "${_DKMS}" clean
   rm -f "${_DKMS}/evdi.mod"
